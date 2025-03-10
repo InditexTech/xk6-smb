@@ -1,11 +1,13 @@
-XK6_VERSION := latest
-XK6_BINARY := $(shell which xk6 || echo "")
+XK6_VERSION := v0.13.4
+XK6_BINARY := $(shell command -v xk6 2> /dev/null)
 
-# Targets
-.PHONY: all build run test
+GOLANGCI_VERSION := v1.64.5
+GOLANGCI_BINARY := $(shell command -v golangci-lint 2> /dev/null)
 
-all: test run
+.PHONY: all
+all: fmt lint compose-up test run compose-down
 
+.PHONY: deps
 deps:
 	@if [ -z "$(XK6_BINARY)" ]; then \
 		echo "Installing xk6..."; \
@@ -14,18 +16,37 @@ deps:
 		echo "xk6 is already installed."; \
 	fi
 
-smb-server:
-	@echo "Starting sftp server..."
+.PHONY: compose-up
+compose-up:
+	@echo "Starting smb server..."
 	@docker-compose -f docker/docker-compose.yaml up -d
 
+.PHONY: compose-down
+compose-down:
+	@echo "Destrying smb server..."
+	@docker-compose -f docker/docker-compose.yaml down
+
+.PHONY: build
 build: deps
 	@echo "Building xk6 extension..."
 	@xk6 build --with github.com/inditex/xk6-sfp=.
 
+.PHONY: run
 run: deps
 	@echo "Running example..."
-	@xk6 run --vus 10 --duration 1m ./examples/main.js
+	@xk6 run ./examples/main.js
 
+.PHONY: test
 test: deps
-	@echo "Running unit tests..."
+	@echo "Running integration tests..."
 	@go clean -testcache && go test ./...
+
+.PHONY: fmt
+fmt:
+	@echo "Running go fmt..."
+	go fmt ./...
+
+.PHONY: lint
+lint: deps
+	@echo "Running golangci-lint..."
+	@golangci-lint run

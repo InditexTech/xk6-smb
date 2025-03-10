@@ -108,13 +108,13 @@ func (c *SmbClient) IsConnected() bool {
 func (c *SmbClient) Close() {
 	if c != nil {
 		if c.share != nil {
-			defer c.share.Umount()
+			defer c.share.Umount() //nolint:errcheck
 		}
 		if c.session != nil {
-			defer c.session.Logoff()
+			defer c.session.Logoff() //nolint:errcheck
 		}
 		if c.conn != nil {
-			defer c.conn.Close()
+			defer c.conn.Close() //nolint:errcheck
 		}
 	}
 
