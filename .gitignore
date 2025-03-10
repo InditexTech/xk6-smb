@@ -2,3 +2,5 @@ k6
 downloaded
 testdata
 .tool-versions
+.idea/
+.vscode/
