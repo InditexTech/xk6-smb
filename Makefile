@@ -59,5 +59,5 @@ lint: deps
 	@golangci-lint run
 
 .PHONY: verify
-verify: fmt lint test run
+verify: fmt lint compose-up test run compose-down
 	@echo "Running verify..."
