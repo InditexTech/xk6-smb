@@ -16,7 +16,8 @@ export default function () {
         const shares = client.getShares();
         console.log("getShares result:", shares);
         check(shares, {
-            "shares retrieved": (s) => s.success === true,
+            "shares retrieved successfully": (s) => s.success === true,
+            "User Volume share retrieved": (s) => s.shares.includes("User Volume"),
         });
     });
 
@@ -61,10 +62,12 @@ export default function () {
     });
 
     group("List Dir", function () {
+        client.appendString(`${dirName}/${fileName}`, "Hello, World!");
         const listResult = client.listFilesInDir(dirName);
         console.log("listFilesInDir result:", listResult);
         check(listResult, {
             "dir listed": (d) => d.length > 0,
+            "dir contains file": (d) => d.includes(fileName),
         });
     });
 

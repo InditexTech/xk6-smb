@@ -13,15 +13,12 @@ services:
       - "138:138/udp"
       - "139:139/tcp"
       - "445:445/tcp"
-    read_only: true
     tmpfs:
-      - /tmp
+      - /mnt
+      - /mnt2
     restart: unless-stopped
     stdin_open: true
     tty: true
-    volumes:
-      - /tmp/smbtest:/mnt:z
-      - /tmp/smbtest:/mnt2:z
     command: '-s "Mount;/mnt" -s "User Volume;/mnt2;yes;no;no;user" -u "user;pwd" -p'
 
 networks:
