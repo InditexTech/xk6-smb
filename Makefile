@@ -50,3 +50,7 @@ fmt:
 lint: deps
 	@echo "Running golangci-lint..."
 	@golangci-lint run
+
+.PHONY: verify
+verify: fmt lint test run
+	@echo "Running verify..."
