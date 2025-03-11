@@ -16,6 +16,13 @@ deps:
 		echo "xk6 is already installed."; \
 	fi
 
+	@if [ -z "$(GOLANGCI_BINARY)" ]; then \
+			echo "Installing golangci-lint..."; \
+			go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_VERSION); \
+	else \
+		echo "golangci-lint is already installed."; \
+	fi
+
 .PHONY: compose-up
 compose-up:
 	@echo "Starting smb server..."
