@@ -1,4 +1,4 @@
-module github.com/inditex/xk6-smb
+module github.com/InditexTech/xk6-smb
 
 go 1.23.3
 

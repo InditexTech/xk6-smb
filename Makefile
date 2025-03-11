@@ -36,7 +36,7 @@ compose-down:
 .PHONY: build
 build: deps
 	@echo "Building xk6 extension..."
-	@xk6 build --with github.com/inditex/xk6-sfp=.
+	@xk6 build --with github.com/InditexTech/xk6-smb=.
 
 .PHONY: run
 run: deps
