@@ -46,7 +46,8 @@ run: deps
 .PHONY: test
 test: deps
 	@echo "Running integration tests..."
-	@go clean -testcache && go test ./...
+	@go clean -testcache && go test -coverprofile=coverage.out ./...
+	@go tool cover -html=coverage.out -o coverage.html
 
 .PHONY: fmt
 fmt:
