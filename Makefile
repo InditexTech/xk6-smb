@@ -61,4 +61,3 @@ lint: deps
 
 .PHONY: verify
 verify: fmt lint compose-up test run compose-down
-	@echo "Running verify..."

@@ -4,3 +4,5 @@ testdata
 .tool-versions
 .idea/
 .vscode/
+coverage.html
+*.out
