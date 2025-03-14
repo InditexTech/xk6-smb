@@ -11,8 +11,6 @@ import (
 	"github.com/hirochachacha/go-smb2"
 )
 
-// Code from: https://github.com/alessandrovaprio/go-smb-client
-
 type Client struct {
 }
 
@@ -367,12 +365,4 @@ func formatErr(err error) error {
 		return errors.New("#ERROR# " + err.Error())
 	}
 	return err
-}
-
-// FormatErrStr add #ERROR# prefix to identify error in retur string
-func (c *SmbClient) FormatErrStr(err error) string {
-	if err != nil {
-		return (errors.New("#ERROR# " + err.Error())).Error()
-	}
-	return ""
 }
