@@ -1,6 +1,3 @@
-# FROM: https://github.com/dperson/samba/blob/master/docker-compose.yml
-version: '3.4'
-
 services:
   samba:
     image: dperson/samba

@@ -26,12 +26,12 @@ deps:
 .PHONY: compose-up
 compose-up:
 	@echo "Starting smb server..."
-	@docker-compose -f docker/docker-compose.yaml up -d
+	@docker compose -f docker/docker-compose.yaml up -d
 
 .PHONY: compose-down
 compose-down:
 	@echo "Destrying smb server..."
-	@docker-compose -f docker/docker-compose.yaml down
+	@docker compose -f docker/docker-compose.yaml down
 
 .PHONY: build
 build: deps
