@@ -20,8 +20,9 @@ type OperationResult struct {
 }
 
 type GetSharesResult struct {
-	OperationResult
-	Shares []string
+	Success bool
+	Message string
+	Shares  []string
 }
 
 type SmbClient struct {
@@ -120,14 +121,26 @@ func (c *SmbClient) Close() {
 
 func (c *SmbClient) GetShares() GetSharesResult {
 	if c == nil || c.session == nil {
-		return GetSharesResult{OperationResult{Success: false, Message: "Client not initialized"}, nil}
+		return GetSharesResult{
+			Success: false,
+			Message: "Client not initialized",
+			Shares:  nil,
+		}
 	}
 	names, err := c.session.ListSharenames()
 	if err != nil {
-		return GetSharesResult{OperationResult{Success: false, Message: err.Error()}, nil}
+		return GetSharesResult{
+			Success: false,
+			Message: err.Error(),
+			Shares:  nil,
+		}
 	}
 
-	return GetSharesResult{OperationResult{Success: true, Message: ""}, names}
+	return GetSharesResult{
+		Success: true,
+		Message: "",
+		Shares:  names,
+	}
 }
 
 func (c *SmbClient) AppendLine(fileName string, strToWrite string) OperationResult {
