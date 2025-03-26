@@ -1,8 +1,12 @@
+PROJECT_VERSION := 1.0.0
+
+GOPATH := $(shell command go env GOPATH)
+
 XK6_VERSION := v0.13.4
-XK6_BINARY := $(shell command -v xk6 2> /dev/null)
+XK6_BINARY := "$(GOPATH)/bin/xk6"
 
 GOLANGCI_VERSION := v1.64.5
-GOLANGCI_BINARY := $(shell command -v golangci-lint 2> /dev/null)
+GOLANGCI_BINARY := "$(GOPATH)/bin/golangci-lint"
 
 .DEFAULT_GOAL := all
 
@@ -11,14 +15,14 @@ all: fmt lint compose-up test run compose-down
 
 .PHONY: deps
 deps:
-	@if [ -z "$(XK6_BINARY)" ]; then \
+	@if [ ! -f "$(XK6_BINARY)" ]; then \
 		echo "Installing xk6..."; \
 		go install go.k6.io/xk6/cmd/xk6@$(XK6_VERSION); \
 	else \
 		echo "xk6 is already installed."; \
 	fi
 
-	@if [ -z "$(GOLANGCI_BINARY)" ]; then \
+	@if [ ! -f "$(GOLANGCI_BINARY)" ]; then \
 			echo "Installing golangci-lint..."; \
 			go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_VERSION); \
 	else \
@@ -38,12 +42,12 @@ compose-down:
 .PHONY: build
 build: deps
 	@echo "Building xk6 extension..."
-	@xk6 build --with github.com/InditexTech/xk6-smb=.
+	@"$(XK6_BINARY)" build --with github.com/InditexTech/xk6-smb=.
 
 .PHONY: run
 run: deps
 	@echo "Running example..."
-	@xk6 run ./examples/main.js
+	@"$(XK6_BINARY)" run ./examples/main.js
 
 .PHONY: test
 test: deps
@@ -59,7 +63,26 @@ fmt:
 .PHONY: lint
 lint: deps
 	@echo "Running golangci-lint..."
-	@golangci-lint run
+	@"$(GOLANGCI_BINARY)" run
 
 .PHONY: verify
 verify: fmt lint compose-up test run compose-down
+
+.PHONY: reuse-deps
+reuse-deps:
+	@if [ -z "reuse" ]; then \
+		echo "Installing reuse tool..."; \
+		pip3 install --user reuse ;\
+	else \
+		echo "reuse is already installed."; \
+	fi
+
+.PHONY: add-copyright-headers
+reuse-annotate: reuse-deps
+	@echo "Adding copyright headers..."
+	@reuse annotate --copyright "Industria de Diseño Textil S.A. INDITEX" --license "Apache-2.0" --year "$$(date +%Y)" --merge-copyrights *.go
+	@reuse lint
+
+.PHONY: get-version
+get-version:
+	@echo $(PROJECT_VERSION)
