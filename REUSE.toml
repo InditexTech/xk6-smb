@@ -1,7 +1,7 @@
 version = 1
 SPDX-PackageName = "xk6-smb"
 SPDX-PackageSupplier = "Industria de Diseño Textil S.A. INDITEX"
-SPDX-PackageDownloadLocation = "https://github.com/InditexTech/xk6-grpcresolver"
+SPDX-PackageDownloadLocation = "https://github.com/InditexTech/xk6-smb"
 
 [[annotations]]
 path = [ # Ignored files
