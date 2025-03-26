@@ -15,14 +15,14 @@ all: fmt lint compose-up test run compose-down
 
 .PHONY: deps
 deps:
-	@if [ -z "$(XK6_BINARY)" ]; then \
+	@if [ ! -f "$(XK6_BINARY)" ]; then \
 		echo "Installing xk6..."; \
 		go install go.k6.io/xk6/cmd/xk6@$(XK6_VERSION); \
 	else \
 		echo "xk6 is already installed."; \
 	fi
 
-	@if [ -z "$(GOLANGCI_BINARY)" ]; then \
+	@if [ ! -f "$(GOLANGCI_BINARY)" ]; then \
 			echo "Installing golangci-lint..."; \
 			go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_VERSION); \
 	else \
@@ -47,7 +47,7 @@ build: deps
 .PHONY: run
 run: deps
 	@echo "Running example..."
-	@xk6 run ./examples/main.js
+	@"$(XK6_BINARY)" run ./examples/main.js
 
 .PHONY: test
 test: deps
