@@ -1,0 +1,31 @@
+go.mod
+  s_b7903e3b964109::t_f96cc6055ae733 3,6-9,13-17,20,25-33,35-36,43-61
+go.sum
+  s_b7903e3b964109::t_6af0d77655ef78 1-10,13-16,25-26,39-40,44-45,50-53,56-62,64-75,78-83,86-87,107-108,112-114,116-120,122-144,147-148,152-155,157,161,164-169,173,182,184-185,187-188,190-194,197-202,206,211-218,225-226
+smb.go
+  s_174e6f2fb30a57::t_8be1792be3d10c 8,16,49,80,84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a8285901918f0808a01dda1e7e5db25649a7ba3e",
+  "prompts": {},
+  "sessions": {
+    "s_174e6f2fb30a57": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_fbcfb665effeEXtYUWHwGvZe1g",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Mariano Alonso Ortiz <marianoao@inditex.com>"
+    },
+    "s_b7903e3b964109": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_fbcfaac4effe4yNhCSPDq5DiOV",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Mariano Alonso Ortiz <marianoao@inditex.com>"
+    }
+  }
+}
