@@ -5,6 +5,7 @@
 package xk6smb
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -12,7 +13,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hirochachacha/go-smb2"
+	"github.com/cloudsoda/go-smb2"
 )
 
 type Client struct {
@@ -45,7 +46,7 @@ func (*Client) NewClient(addressWithPort string, username string, psw string, sh
 		return nil
 	}
 	c.dialer = initDialer(username, psw)
-	c.session, err = c.initSession()
+	c.session, err = c.initSession(addressWithPort)
 	if err != nil {
 		logger.Error(err)
 		return nil
@@ -76,11 +77,11 @@ func initDialer(user string, psw string) *smb2.Dialer {
 	return dialer
 }
 
-func (c *SmbClient) initSession() (*smb2.Session, error) {
+func (c *SmbClient) initSession(addressWithPort string) (*smb2.Session, error) {
 	if c == nil || c.dialer == nil {
 		return nil, formatErr(errors.New("Client Dialer not initialized"))
 	}
-	s, err := c.dialer.Dial(c.conn)
+	s, err := c.dialer.DialConn(context.Background(), c.conn, addressWithPort)
 	if err != nil {
 		fmt.Println(err)
 		return nil, formatErr(err)
