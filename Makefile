@@ -1,12 +1,18 @@
 PROJECT_VERSION := 1.0.0
 
-GOPATH := $(shell command go env GOPATH)
+# `go install` honours GOBIN when it is set, and asdf-managed Go sets GOBIN to a
+# directory that is NOT $(GOPATH)/bin. Ask the toolchain where it actually
+# installs, and fall back to the documented default when GOBIN is unset.
+GOBIN := $(shell command go env GOBIN)
+ifeq ($(strip $(GOBIN)),)
+GOBIN := $(shell command go env GOPATH)/bin
+endif
 
 XK6_VERSION := v0.13.4
-XK6_BINARY := "$(GOPATH)/bin/xk6"
+XK6_BINARY := "$(GOBIN)/xk6"
 
 GOLANGCI_VERSION := v1.64.5
-GOLANGCI_BINARY := "$(GOPATH)/bin/golangci-lint"
+GOLANGCI_BINARY := "$(GOBIN)/golangci-lint"
 
 .DEFAULT_GOAL := all
 
