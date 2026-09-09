@@ -8,6 +8,13 @@ ifeq ($(strip $(GOBIN)),)
 GOBIN := $(shell command go env GOPATH)/bin
 endif
 
+# xk6 builds k6 in a temporary directory outside this repository and shells out
+# to `go` there. Under asdf the `go` shim resolves its version from the current
+# directory upwards, finds no .tool-versions under /tmp and refuses to run.
+# Pin the version explicitly so it resolves from any working directory.
+ASDF_GOLANG_VERSION ?= $(shell command go env GOVERSION 2>/dev/null | sed 's/^go//')
+export ASDF_GOLANG_VERSION
+
 XK6_VERSION := v0.13.4
 XK6_BINARY := "$(GOBIN)/xk6"
 
