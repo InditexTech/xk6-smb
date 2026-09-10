@@ -1,12 +1,16 @@
 PROJECT_VERSION := 1.0.0
 
 GOPATH := $(shell command go env GOPATH)
+GOBIN := $(shell command go env GOBIN)
+TOOLS_BIN := $(if $(GOBIN),$(GOBIN),$(GOPATH)/bin)
+ASDF_GOLANG_VERSION ?= $(shell command go env GOVERSION | sed 's/^go//')
+export ASDF_GOLANG_VERSION
 
 XK6_VERSION := v0.13.4
-XK6_BINARY := "$(GOPATH)/bin/xk6"
+XK6_BINARY := "$(TOOLS_BIN)/xk6"
 
 GOLANGCI_VERSION := v1.64.5
-GOLANGCI_BINARY := "$(GOPATH)/bin/golangci-lint"
+GOLANGCI_BINARY := "$(TOOLS_BIN)/golangci-lint"
 
 .DEFAULT_GOAL := all
 
@@ -15,16 +19,17 @@ all: fmt lint compose-up test run compose-down
 
 .PHONY: deps
 deps:
+	@mkdir -p "$(TOOLS_BIN)"
 	@if [ ! -f "$(XK6_BINARY)" ]; then \
 		echo "Installing xk6..."; \
-		go install go.k6.io/xk6/cmd/xk6@$(XK6_VERSION); \
+		GOBIN="$(TOOLS_BIN)" go install go.k6.io/xk6/cmd/xk6@$(XK6_VERSION); \
 	else \
 		echo "xk6 is already installed."; \
 	fi
 
 	@if [ ! -f "$(GOLANGCI_BINARY)" ]; then \
 			echo "Installing golangci-lint..."; \
-			go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_VERSION); \
+			GOBIN="$(TOOLS_BIN)" go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_VERSION); \
 	else \
 		echo "golangci-lint is already installed."; \
 	fi
